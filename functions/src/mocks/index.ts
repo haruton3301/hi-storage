@@ -6,7 +6,7 @@ import {
   DocumentReference,
   DocumentSnapshot,
 } from "firebase-admin/firestore"
-import { CallableRequest } from "firebase-functions/https"
+import { Request } from "firebase-functions/https"
 
 const password = "password123"
 const hashedPassword = bcrypt.hashSync(password, 10)
@@ -64,13 +64,10 @@ export const mockStorage = {
   })),
 }
 
-export const createMockRequest = (
-  fileId: string,
-  password: string,
-): CallableRequest =>
+export const createMockRequest = (fileId: string, password: string): Request =>
   ({
-    data: {
+    body: {
       fileId,
       password,
     },
-  }) as CallableRequest
+  }) as Request

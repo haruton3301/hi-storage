@@ -1,11 +1,13 @@
-import { describe, expect, it, jest } from "@jest/globals"
-import firebaseFunctionsTest from "firebase-functions-test"
+import { beforeAll, describe, expect, it, jest } from "@jest/globals"
+import express from "express"
+import { Request } from "firebase-functions/https"
+import supertest from "supertest"
 import { getDownloadUrl } from "../"
-import { createMockRequest, mockFirestore, mockStorage } from "../mocks"
-const { wrap } = firebaseFunctionsTest()
+import { mockFirestore, mockStorage } from "../mocks"
 
 jest.mock("firebase-admin/app", () => ({
   initializeApp: jest.fn(),
+  cert: jest.fn(),
 }))
 
 jest.mock("firebase-admin/firestore", () => ({
@@ -17,26 +19,37 @@ jest.mock("firebase-admin/storage", () => ({
 }))
 
 describe("getDownloadUrl function", () => {
-  it("should return a signed URL when the file exists and password is correct", async () => {
-    const mockRequest = createMockRequest("mockId", "password123")
-    const result = await wrap(getDownloadUrl)(mockRequest)
+  const app = express()
 
-    expect(result).toEqual({ url: "signedUrl" })
+  beforeAll(() => {
+    app.use(express.json())
+    app.use("/", (req, res) => getDownloadUrl(req as Request, res))
   })
 
-  it("should throw an error if the file does not exist", async () => {
-    const mockRequest = createMockRequest("nonExistingFile", "password123")
+  it("should return 200 and a signed URL when the file exists and password is correct", async () => {
+    const response = await supertest(app)
+      .post("/")
+      .send({ fileId: "mockId", password: "password123" })
 
-    await expect(wrap(getDownloadUrl)(mockRequest)).rejects.toThrowError(
-      "File does not exist",
-    )
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual({ url: "signedUrl" })
   })
 
-  it("should throw an error if the password is incorrect", async () => {
-    const mockRequest = createMockRequest("mockId", "wrongPassword")
+  it("should return 404 if the file does not exist", async () => {
+    const response = await supertest(app)
+      .post("/")
+      .send({ fileId: "nonExistingFile", password: "password123" })
 
-    await expect(wrap(getDownloadUrl)(mockRequest)).rejects.toThrowError(
-      "Incorrect password",
-    )
+    expect(response.status).toBe(404)
+    expect(response.body).toEqual({ error: "File does not exist" })
+  })
+
+  it("should return 401 if the password is incorrect", async () => {
+    const response = await supertest(app)
+      .post("/")
+      .send({ fileId: "mockId", password: "wrongPassword" })
+
+    expect(response.status).toBe(401)
+    expect(response.body).toEqual({ error: "Incorrect password" })
   })
 })
