@@ -4,6 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "noUnusedLocals": false,
     "strict": true,
     "outDir": "lib"
   },
