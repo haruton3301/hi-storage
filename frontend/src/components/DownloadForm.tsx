@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { downloadFile } from "../services/api"
 import { ErrorMessage } from "./ErrorMessage"
+import Loader from "./Loader"
 import { SubmitButton } from "./SubmitButton"
 import { TextInput } from "./TextInput"
 
@@ -13,11 +14,13 @@ const DownloadForm = ({ slug }: DownloadFormProps) => {
   const [password, setPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [loading, setLoading] = useState(false)
+  const [isChecking, setIsChecking] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
     const checkFileExists = async () => {
       if (!slug) return
+      setIsChecking(true)
       try {
         await downloadFile(slug, "preflight")
       } catch (error: unknown) {
@@ -27,6 +30,8 @@ const DownloadForm = ({ slug }: DownloadFormProps) => {
         ) {
           navigate("/404")
         }
+      } finally {
+        setIsChecking(false)
       }
     }
     checkFileExists()
@@ -65,18 +70,24 @@ const DownloadForm = ({ slug }: DownloadFormProps) => {
   }
 
   return (
-    <div className="w-full max-w-md p-6 rounded-lg bg-white shadow-md">
-      {errorMessage && <ErrorMessage message={errorMessage} />}
-      <TextInput
-        label="パスワードを入力してください"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <SubmitButton onClick={handleDownload} disabled={loading}>
-        {loading ? "ダウンロード中..." : "ダウンロード"}
-      </SubmitButton>
-    </div>
+    <>
+      {isChecking ? (
+        <Loader />
+      ) : (
+        <div className="w-full max-w-md p-6 rounded-lg bg-white shadow-md">
+          {errorMessage && <ErrorMessage message={errorMessage} />}
+          <TextInput
+            label="パスワードを入力してください"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <SubmitButton onClick={handleDownload} disabled={loading}>
+            {loading ? "ダウンロード中..." : "ダウンロード"}
+          </SubmitButton>
+        </div>
+      )}
+    </>
   )
 }
 
