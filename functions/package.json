@@ -14,9 +14,10 @@
   "engines": {
     "node": "22"
   },
-  "main": "lib/index.js",
+  "main": "lib/src/index.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "firebase-admin": "^12.6.0",
     "firebase-functions": "^6.0.1"
   },
@@ -31,6 +32,7 @@
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import": "^2.25.4",
     "express": "^4.21.2",
+    "firebase": "^11.2.0",
     "firebase-functions-test": "^3.4.0",
     "firebase-mock": "^2.3.2",
     "jest": "^29.7.0",
