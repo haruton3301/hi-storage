@@ -3,8 +3,8 @@
 ## Tech Stack
 
 - frontend
-  - vite, react
-  - tailwind, daisyUI
+  - Vite, React
+  - Tailwind, daisyUI
 - server
   - Firebase Functions, Storage, Firestore
 
