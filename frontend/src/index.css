@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  background-color: var(--color-slate-100);
+}
