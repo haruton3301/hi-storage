@@ -33,6 +33,10 @@ export const getDownloadUrl = functions.https.onRequest(
         return
       }
 
+      if (password === "preflight") {
+        res.status(200).send()
+      }
+
       const storedPasswordHash = fileData.data()?.password
 
       const isPasswordCorrect = await bcrypt.compare(

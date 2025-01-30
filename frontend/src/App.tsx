@@ -8,6 +8,7 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/:slug" element={<DownloadPage />} />
+        <Route path="/404" element={<NotFoundPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>

@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { downloadFile } from "../services/api"
 import { ErrorMessage } from "./ErrorMessage"
 import { SubmitButton } from "./SubmitButton"
@@ -12,6 +13,24 @@ const DownloadForm = ({ slug }: DownloadFormProps) => {
   const [password, setPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const checkFileExists = async () => {
+      if (!slug) return
+      try {
+        await downloadFile(slug, "preflight")
+      } catch (error: unknown) {
+        if (
+          error instanceof Error &&
+          error.message.includes("ファイルが見つかりません")
+        ) {
+          navigate("/404")
+        }
+      }
+    }
+    checkFileExists()
+  }, [slug, navigate])
 
   const handleDownload = async () => {
     if (!password) {
