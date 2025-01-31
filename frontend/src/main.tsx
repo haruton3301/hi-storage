@@ -4,6 +4,10 @@ import App from "./App.tsx"
 import { Header } from "./components/Header.tsx"
 import "./index.css"
 
+if (import.meta.env.DEV && import.meta.env.VITE_MOCK_MODE === "true") {
+  await import("./mocks")
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Header />
