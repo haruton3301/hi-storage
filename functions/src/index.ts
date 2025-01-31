@@ -16,6 +16,7 @@ functions.setGlobalOptions({
   region: "asia-northeast1",
   memory: "1GiB",
   timeoutSeconds: 60,
+  maxInstances: 10,
 })
 
 export const getDownloadUrl = functions.https.onRequest(
