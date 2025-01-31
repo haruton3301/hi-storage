@@ -5,7 +5,8 @@ import { Header } from "./components/Header.tsx"
 import "./index.css"
 
 if (import.meta.env.DEV && import.meta.env.VITE_MOCK_MODE === "true") {
-  await import("./mocks")
+  const { worker } = await import("./mocks/setup/browser")
+  await worker.start({ onUnhandledRequest: "bypass" })
 }
 
 createRoot(document.getElementById("root")!).render(

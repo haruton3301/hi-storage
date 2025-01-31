@@ -1,5 +1,6 @@
 import { http, HttpResponse } from "msw"
 import { mockFiles } from "../data/files"
+import { mockStorageBaseUrl } from "../data/storage"
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -37,7 +38,7 @@ export const handlers = [
         )
       }
 
-      const signedUrl = `https://mock-storage.com/${file.storagePath}`
+      const signedUrl = `${mockStorageBaseUrl}/${file.storagePath}`
       return HttpResponse.json({ url: signedUrl }, { status: 200 })
     } catch (error) {
       console.error("Mock API Error:", error)

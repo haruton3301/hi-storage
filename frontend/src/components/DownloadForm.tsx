@@ -77,6 +77,7 @@ const DownloadForm = ({ slug }: DownloadFormProps) => {
         <div className="w-full max-w-md p-6 rounded-lg bg-white shadow-md">
           {errorMessage && <ErrorMessage message={errorMessage} />}
           <TextInput
+            id="password"
             label="パスワードを入力してください"
             type="password"
             value={password}
