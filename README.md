@@ -7,8 +7,10 @@ https://hi-storage.web.app
 - frontend
   - Vite, React
   - Tailwind, daisyUI
+  - Vitest, MSW, React-Testing-Library
 - server
   - Firebase Functions, Storage, Firestore
+  - Jest
 
 ## Upload Steps
 
