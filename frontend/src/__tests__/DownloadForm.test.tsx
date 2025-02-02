@@ -1,8 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import DownloadForm from "../components/DownloadForm"
 import { mockFiles } from "../mocks/data/files"
+import { mockStorageBaseUrl } from "../mocks/data/storage"
 import NotFoundPage from "../pages/404"
 
 describe("DownloadForm", () => {
@@ -29,11 +30,25 @@ describe("DownloadForm", () => {
     const downloadButton = screen.getByText("ダウンロード")
     fireEvent.click(downloadButton)
 
-    await waitFor(() =>
-      expect(screen.queryByText("ダウンロード中...")).not.toBeInTheDocument(),
-    )
+    // Mocks for download
+    const link = Object.assign(document.createElement("a"), {
+      click: vi.fn(),
+    })
+    vi.spyOn(document, "createElement").mockImplementation(() => link)
+    vi.spyOn(document.body, "appendChild").mockImplementation(vi.fn())
+    vi.spyOn(document.body, "removeChild").mockImplementation(vi.fn())
 
-    // ファイルダウンロードのテストが未実装。Help me
+    await waitFor(() => {
+      expect(screen.queryByText("ダウンロード中...")).not.toBeInTheDocument()
+      expect(document.body.appendChild).toHaveBeenCalledWith(link)
+      expect(link.href).toBe(
+        `${mockStorageBaseUrl}/${mockFiles[0].storagePath}`,
+      )
+      expect(link.click).toHaveBeenCalledTimes(1)
+      expect(document.body.removeChild).toHaveBeenCalledWith(link)
+    })
+
+    vi.restoreAllMocks()
   })
 
   it("should show an error if the password is incorrect", async () => {
