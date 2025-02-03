@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "deploy": "firebase deploy --only hosting",
     "msw": "msw init ./public --save",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.1",
