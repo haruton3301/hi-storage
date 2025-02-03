@@ -1,21 +1,21 @@
-import { beforeAll, describe, expect, it, jest } from "@jest/globals"
 import express from "express"
 import { Request } from "firebase-functions/https"
 import supertest from "supertest"
+import { beforeAll, describe, expect, it, vi } from "vitest"
 import { getDownloadUrl } from "../"
 import { mockFirestore, mockStorage } from "../mocks"
 
-jest.mock("firebase-admin/app", () => ({
-  initializeApp: jest.fn(),
-  cert: jest.fn(),
+vi.mock("firebase-admin/app", () => ({
+  initializeApp: vi.fn(),
+  cert: vi.fn(),
 }))
 
-jest.mock("firebase-admin/firestore", () => ({
-  getFirestore: jest.fn(() => mockFirestore),
+vi.mock("firebase-admin/firestore", () => ({
+  getFirestore: vi.fn(() => mockFirestore),
 }))
 
-jest.mock("firebase-admin/storage", () => ({
-  getStorage: jest.fn(() => mockStorage),
+vi.mock("firebase-admin/storage", () => ({
+  getStorage: vi.fn(() => mockStorage),
 }))
 
 describe("getDownloadUrl function", () => {

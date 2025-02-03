@@ -1,5 +1,4 @@
-import { cert, initializeApp } from "firebase-admin/app"
-import { ServiceAccount } from "firebase-admin/lib/app/credential"
+import { cert, initializeApp, ServiceAccount } from "firebase-admin/app"
 import * as functions from "firebase-functions"
 import serviceAccount from "../keys/serviceAccountKey.json" with { type: "json" }
 import { generateHashedPassword } from "./funcs/generateHashedPassword.js"
