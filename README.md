@@ -10,7 +10,7 @@ https://hi-storage.web.app
   - Vitest, MSW, React-Testing-Library
 - server
   - Firebase Functions, Storage, Firestore
-  - Jest
+  - Vitest
 
 ## Upload Steps
 
