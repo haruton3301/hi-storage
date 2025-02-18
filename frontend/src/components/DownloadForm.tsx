@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { downloadFile } from "../services/api"
 import { ErrorMessage } from "./ErrorMessage"
-import Loader from "./Loader"
+import { Loader } from "./Loader"
 import { SubmitButton } from "./SubmitButton"
 import { TextInput } from "./TextInput"
 
